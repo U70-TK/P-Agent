@@ -1,6 +1,6 @@
 # Measuring the quality of AI-generated code: A User Study.
 
-## Participant ID: P00
+## Participant ID: P0A
 
 ---
 
@@ -9,10 +9,10 @@
 Below are two questions in the form of GitHub Issues. Please finish these two questions in order. Once you have finished a question, please do not go back to it. 
 
 * <strong>First Question:</strong> User Creation
-See issue [question_1_user_creation](https://github.com/U70-TK/dual_strategy-coding_portion_refactored/issues/1) for details.
+See issue [question_1_user_creation](https://github.com/U70-TK/P-Agent/issues/1) for details.
 
 * <strong>Second Question:</strong> Secret Storage
-See issue [question_2_secret_storage](https://github.com/U70-TK/dual_strategy-coding_portion_refactored/issues/2) for details.
+See issue [question_2_secret_storage](https://github.com/U70-TK/P-Agent/issues/2) for details.
 
 **Warning:**
 
@@ -20,13 +20,13 @@ See issue [question_2_secret_storage](https://github.com/U70-TK/dual_strategy-co
 
 **Steps:**
 
-1. <span style="color:yellow"><strong>Go to GitHub Issue</strong></span> for Question #1: [question_1_user_creation](https://github.com/U70-TK/dual_strategy-coding_portion_refactored/issues/1).
+1. <span style="color:yellow"><strong>Go to GitHub Issue</strong></span> for Question #1: [question_1_user_creation](https://github.com/U70-TK/P-Agent/issues/1).
 2. <span style="color:yellow"><strong>Read the specifications</strong></span> for Question #1. And then go to each Issue's related PRs. For example: ![./Figures/Instruction_1.png](./Figures/Instruction_1.png)
 3. For each question: If there's one Pull Request, then review it and either <span style="color:yellow"><strong>_Fully Accept_</strong></span> it, or <span style="color:yellow"><strong>_Modify & Accept_</strong></span> it. If there are two Pull Requests, then review both of them carefully and either <span style="color:yellow"><strong>_Fully Accept_</strong></span> one of them, or <span style="color:yellow"><strong>_Modify & Accept_</strong></span> one of them. 
 4. <span style="color:yellow"><strong>Test your endpoint</strong></span> (See more technical details at section "Guidelines -> How to test your endpoint" below). The ✅ or ❌ mark that appears next to your commit message will indicate whether your solution passes our hidden functional test. Please make a maximal effort to make your code pass the functional test before merging.
 5. <span style="color:yellow"><strong>Merge the output</strong></span> to the base file in branch `question_X_secret_storage` or `question_X_user_creation` once you are satistied with the Pull Request. 
 5. After Question #1, please <span style="color:yellow"><strong>finish the survey</strong></span>: [Survey 1](https://uwaterloo.ca1.qualtrics.com/jfe/form/SV_4TJiKRH3je8eRlc). 
-6. <span style="color:yellow"><strong>Go to GitHub Issue</strong></span> for Question #2: [question_2_secret_storage](https://github.com/U70-TK/dual_strategy-coding_portion_refactored/issues/2). 
+6. <span style="color:yellow"><strong>Go to GitHub Issue</strong></span> for Question #2: [question_2_secret_storage](https://github.com/U70-TK/P-Agent/issues/2). 
 7. For Question #2. And then review one or both PRs, and <span style="color:yellow"><strong>replicate steps</strong></span> 2-5.  
 8. After Question #2, please <span style="color:yellow"><strong>finish the survey</strong></span>: [Survey 2](https://uwaterloo.ca1.qualtrics.com/jfe/form/SV_b7w8NDqlDs1Mqwu). 
 
