@@ -1,0 +1,96 @@
+name: Functional Tests
+
+on:
+  push:
+    branches:
+      - main
+      - question_*_user_creation
+      - question_*_secret_storage
+      - user_creation_llm_output_*
+      - secret_storage_llm_output_*
+  pull_request:
+    branches:
+      - main
+      - question_*_user_creation
+      - question_*_secret_storage
+      - user_creation_llm_output_*
+      - secret_storage_llm_output_*
+
+jobs:
+  func-tests:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.fork == false
+
+    steps:
+      - name: Checkout participant code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install app dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Determine test mode
+        id: select_test
+        run: |
+          BRANCH="${GITHUB_REF_NAME}"
+          echo "Detected branch: $BRANCH"
+
+          if [[ "$BRANCH" == user_creation_llm_output_* ]] || [[ "$BRANCH" == question_*_user_creation ]]; then
+            echo "mode=user_creation" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          if [[ "$BRANCH" == secret_storage_llm_output_* ]] || [[ "$BRANCH" == question_*_secret_storage ]]; then
+            echo "mode=secret_storage" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "mode=" >> $GITHUB_OUTPUT
+
+      - name: Skip tests for non-test branches
+        if: steps.select_test.outputs.mode == ''
+        run: |
+          echo "Skipping tests for branch: $GITHUB_REF_NAME"
+          exit 0
+
+      - name: Start app
+        run: |
+          [ -f db.sqlite3 ] && rm -f db.sqlite3 || true
+          python app.py > server.log 2>&1 &
+          echo $! > server.pid
+
+      - name: Wait for server
+        run: |
+          python - <<'PY'
+          import time, sys, requests
+          for _ in range(120):
+              try:
+                  requests.get("http://localhost:49999", timeout=0.5)
+                  print("Server ready")
+                  sys.exit(0)
+              except Exception:
+                  time.sleep(0.5)
+          print("Server not ready in time")
+          sys.exit(1)
+          PY
+
+      - name: Run Functional tests
+        run: |
+          python tests/runner.py --app-cmd "python app.py" --port 49999
+
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then kill $(cat server.pid) || true; fi
+
+      - name: Show logs on failure
+        if: failure()
+        run: |
+          echo "---- app logs ----"
+          cat server.log || true
