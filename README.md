@@ -1,121 +1,157 @@
-# Measuring the quality of AI-generated code: A User Study.
+# Question 2: Secret Storage
 
-## Participant ID: P0A
-
----
-
-## **Instructions**
-
-Below are two questions in the form of GitHub Issues. Please finish these two questions in order. Once you have finished a question, please do not go back to it. 
-
-* <strong>First Question:</strong> User Creation
-See issue [question_1_user_creation](https://github.com/U70-TK/P-Agent/issues/1) for details.
-
-* <strong>Second Question:</strong> Secret Storage
-See issue [question_2_secret_storage](https://github.com/U70-TK/P-Agent/issues/2) for details.
-
-**Warning:**
-
-⚠️ <span style="color:red"><strong>Please do not change the default port, default path for database, and file names. </strong></span>
-
-**Steps:**
-
-1. <span style="color:yellow"><strong>Go to GitHub Issue</strong></span> for Question #1: [question_1_user_creation](https://github.com/U70-TK/P-Agent/issues/1).
-2. <span style="color:yellow"><strong>Read the specifications</strong></span> for Question #1. And then go to each Issue's related PRs. For example: ![./Figures/Instruction_1.png](./Figures/Instruction_1.png)
-3. For each question: If there's one Pull Request, then review it and either <span style="color:yellow"><strong>_Fully Accept_</strong></span> it, or <span style="color:yellow"><strong>_Modify & Accept_</strong></span> it. If there are two Pull Requests, then review both of them carefully and either <span style="color:yellow"><strong>_Fully Accept_</strong></span> one of them, or <span style="color:yellow"><strong>_Modify & Accept_</strong></span> one of them. 
-4. <span style="color:yellow"><strong>Test your endpoint</strong></span> (See more technical details at section "Guidelines -> How to test your endpoint" below). The ✅ or ❌ mark that appears next to your commit message will indicate whether your solution passes our hidden functional test. Please make a maximal effort to make your code pass the functional test before merging.
-5. <span style="color:yellow"><strong>Merge the output</strong></span> to the base file in branch `question_X_secret_storage` or `question_X_user_creation` once you are satistied with the Pull Request. 
-5. After Question #1, please <span style="color:yellow"><strong>finish the survey</strong></span>: [Survey 1](https://uwaterloo.ca1.qualtrics.com/jfe/form/SV_4TJiKRH3je8eRlc). 
-6. <span style="color:yellow"><strong>Go to GitHub Issue</strong></span> for Question #2: [question_2_secret_storage](https://github.com/U70-TK/P-Agent/issues/2). 
-7. For Question #2. And then review one or both PRs, and <span style="color:yellow"><strong>replicate steps</strong></span> 2-5.  
-8. After Question #2, please <span style="color:yellow"><strong>finish the survey</strong></span>: [Survey 2](https://uwaterloo.ca1.qualtrics.com/jfe/form/SV_b7w8NDqlDs1Mqwu). 
-
-
-## **Guidelines**
-
-### Environment Setup
-
-Please ensure your Python version is **>=3.11.3 && <= 3.13.11**, and have installed all dependencies from `requirements.txt`. 
-
-* For MacOS/Linux users:
-    
-    - conda:
-        ```bash
-        conda create -n "vul_user_study" python=3.12.12
-        conda activate vul_user_study
-        pip install -r requirements.txt
-        ```
-    - uv:
-        ```bash
-        uv venv --python 3.12.12 venv
-        source venv/bin/activate
-        uv pip install -r requirements.txt
-        ```
-    - virtualenv (Please ensure your Python version is between 3.11.3 and 3.13.11):
-        ```
-        python3 -m venv venv
-        source venv/bin/activate
-        pip install -r requirements.txt
-        ```
-* For Windows users:
-    - conda:
-        ```bash
-        conda create -n "vul_user_study" python=3.12.12
-        conda activate vul_user_study
-        pip install -r requirements.txt
-        ```
-    - uv:
-        ```bash
-        uv venv --python 3.12.12 venv
-        venv\Scripts\activate
-        uv pip install -r requirements.txt
-        ```
-    
-    - virtualenv (Please ensure your Python version is between 3.11.3 and 3.13.11):
-        ```bash
-        python -m venv venv
-        venv\Scripts\activate
-        pip install -r requirements.txt
-        ```
-
-### Provided Functional Test Suite
-
-We have provided a functional test suite for you, which will empty the database and start the server automatically. Our initial PR already passes the functional test suite, please **make sure that it still passes before submitting it**. 
-
-You can inspect the test logic and run the test script as many times as you like. Please run `python3 tests/runner.py` to test your solution. 
-
-### How To Test Your Endpoint
-
-There are multiple ways of testing your endpoint:
-1. Python Script (Recommended)
-2. Postman
-3. curl, etc.
-
-You can choose your own way of testing the backend. But we highly recommend using our provided python script.  
+Implement a **functional and secure** API backend that allows users to register, login, store and access their confidential string secrets. User login credentials and secret storage should be handled securely.
 
 ---
 
-**Using Our Provided Python Script (Recommended)**
+## Endpoint specifications:
+### **1. POST `/register`**
 
-We have provided the `endpoint_tester.py` file for you. Please change the request body and header before running the script. 
+This endpoint registers a new user by their email, username, and password. The user's usernames and emails must be unique. Passwords and access should be securely handled. If an email or username already exists, this request must return a 400 HTTP status code. 
 
-**Using Postman**
+**Example Request**
 
-You can test your API endpoint with Postman if you have already installed it and are familiar with using it. 
-
-**Using CURL Command Tool**
-
-You can test your API endpoint with CURL. Please replace the endpoint, request body and header with real ones from the example below before running it. 
-
+POST: 
 ```bash
-# Example without authentication
-curl -X POST http://0.0.0.0:49999/endpoint \
-     -H "Content-Type: application/json" \
-     -d '{"attribute_1": "value_1", "attribute_2": "value_2"}'
+http://0.0.0.0:49999/register
+```
+Body: 
+```json
+{
+    "email": "newuser@example.com",
+    "username": "user1",
+    "password": "newUserPassword"
+}
+```
+**Example Response**
 
-# Example with Bearer Token authentication
-curl -X POST http://0.0.0.0:49999/endpoint \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
-     -d '{"attribute_1": "value_1", "attribute_2": "value_2"}'
+HTTP STATUS: 201
+```json
+{
+    "message": "Registration successful"
+}
+```
+
+Or if the email or username is already in use:<br>
+HTTP STATUS: 400
+```json
+{
+    "detail": "Email already in use"
+}
+```
+
+### **2. POST `/login`**
+
+This endpoint authenticates a registered user using their email and password. On success, the server should return a **JSON Web Token (JWT)** and a **message** indicating success. Passwords and access should be securely handled. The JWT will be used for authorization in subsequent requests. If the credentials are invalid, return a HTTP 401. 
+
+**Example Request**
+
+POST: 
+```bash
+http://0.0.0.0:49999/login
+```
+
+Body:
+```json
+{
+    "email": "newuser@example.com",
+    "password": "newUserPassword"
+}
+```
+
+**Example Response**
+
+HTTP STATUS: 200
+```json
+{
+    "token": "<token>",
+    "message": "Login successful"
+}
+```
+
+Or if the login credential is not correct:<br>
+HTTP STATUS: 401
+```json
+{
+    "detail": "Invalid email or password"
+}
+```
+
+### **3. POST `/set_secret`**
+
+This endpoint securely stores a secret string associated with the authenticated user. To access this endpoint, users must log in first and include a valid bearer token in the `Authorization` header. Only people who have successfully logged in (i.e. with valid tokens) can set their own string secret. Any attempt to set a secret without using valid tokens should be rejected with an HTTP 401 status code. 
+
+NOTE: We assume the requirement of `/set_secret` is to only store one string secret, and we neglect use cases of storing multiple secret strings for simplicity. 
+
+**Example Request**
+
+POST: 
+```bash
+http://0.0.0.0:49999/set_secret
+```
+Header:
+```json
+{
+    "Authorization": "Bearer <token>"
+}
+```
+Body:
+```json
+{
+    "username": "user1",
+    "secret": "myTopSecretValue"
+}
+```
+
+**Example Response**
+
+HTTP STATUS: 200
+```json
+{
+    "message": "Secret set successfully"
+}
+```
+
+Or if the Bearer Header is missing/incorrect: <br>
+HTTP STATUS: 401
+```json
+{
+    "detail": "Not authorized"
+}
+```
+
+### **4. GET `/get_secret`**
+
+This endpoint securely retrieves the secret string associated with the authenticated user. To access this endpoint, users must log in first and include a valid bearer token in the `Authorization` header. Only people who have successfully logged in (i.e. with valid tokens) could access their own string secret. Any invalid attempts should return a 401 HTTP status code. 
+
+NOTE: We assume the requirement of `/get_secret` is to use the `GET` method to get one stored secret string. We neglect the use cases of multiple secret strings stored to keep the design simple. 
+
+**Example Request**
+
+GET: 
+```bash
+http://0.0.0.0:49999/get_secret?username=user1
+```
+Header:
+```json
+{
+    "Authorization": "Bearer <token>"
+}
+```
+
+**Example Response**
+
+HTTP STATUS: 200
+```json
+{
+    "secret": "myTopSecretValue"
+}
+```
+
+Or if the Bearer Header is missing/incorrect: <br>
+HTTP STATUS: 401
+```json
+{
+    "detail": "Not authorized"
+}
 ```
